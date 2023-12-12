@@ -38,6 +38,8 @@
 \usetikzlibrary{chains,shapes.symbols}
 \usetikzlibrary{trees}
 \usetikzlibrary{calc}
+
+
 \input{tikz-hypergraph}
 \tikzset{hide on/.code={\only<#1>{\color{white}}}}
 
@@ -64,88 +66,16 @@
 \maketitle % title page with default picture
 
 \section{Motivation}
-\begin{frame}{Model Counting}
 
-\begin{block}{Problem}
-Counting the number of satisfiable assignments of a propositional formula $F$. Denoted as $|F|$.
-\vspace{0.5cm}
-\begin{displaymath}
-    \begin{array}{|c c|c|}
-    % |c c|c| means that there are three columns in the table and
-    % a vertical bar ’|’ will be printed on the left and right borders,
-    % and between the second and the third columns.
-    % The letter ’c’ means the value will be centered within the column,
-    % letter ’l’, left-aligned, and ’r’, right-aligned.
-    p & q & F=a \land b\\ % Use & to separate the columns
-    \hline % Put a horizontal line between the table header and the rest.
-    \color{blue}1 & \color{blue}1 & \color{blue}1\\
-    1 & 0 & 0\\
-    0 & 1 & 0\\
-    0 & 0 & 0\\
-    \end{array}
-    \end{displaymath}
-
-\end{block}
-\centering
-\begin{tikzpicture}[]
-    \node[draw](sharpsat){\color{magenta} \bf \#SAT};
-\end{tikzpicture}\\
-Counts the number of solutions of a propositional formula. \\
-Worst-case exponential complexity!
-\end{frame}
-\begin{frame}{d-DNNF}
-    \begin{columns}[]
-        \begin{column}{.5\textwidth}
-            Any propositional formula which is:\\
-            \begin{block}<1->{{\bf d}eterministic}
-                Exclusive or-operators $F=A \lor B$\\
-                Never simultaneous $A=1$ and $B=1$\\
-                If-then-else\\
-                $|F|=|A|+|B|$\\
-            \end{block}
-            \begin{block}<3->{{\bf D}ecomposable}
-                And-operands $F=A \land B$ never share variables\\
-                $|F|=|A|*|B|$\\
-            \end{block}
-            \begin{block}<5->{{\bf N}egation {\bf N}ormal {\bf F}orm}
-            \end{block}
-        \end{column}
-        \begin{column}{.5\textwidth}
-            \only<1-2>{
-            \begin{forest}
-                for tree={ s sep+=12pt,
-                l sep+=12pt}
-                [$\lor$
-                    [$a \land b$]
-                    [$c \land \only<2>{\neg} b$],edge label={node[midway,left,font=\scriptsize]{1}}
-                ] 
-            \end{forest}}
-            \only<3->{
-                \begin{forest}
-                    for tree={ s sep+=12pt,
-                    l sep+=12pt}
-                    [$\land$
-                        [$a\lor b$]
-                        [${\color{red}\only<3>{b}}{\color{green}\only<4->{d}}\lor c$],edge label={node[midway,left,font=\scriptsize]{1}}
-                    ] 
-                \end{forest}}
-        \end{column}
-        
-    \end{columns}
-    \visible<6->{
-    \begin{center}
-        {\bf d-DNNF formulas allow linear-time model counting\\
-        d-DNNF Compilation: CNF $\rightarrow$ d-DNNF\\
-        Knowledge-Compilation: It's still just a formula }}
-    \end{center}
-
-\end{frame}
 \subsection{Feature Models}
 \begin{frame}{\insertsubsection}
 	\centering
 	\includegraphics[width=10cm]{fm.png}
     \begin{block}{}
-        For this thesis, we can treat feature models as propositional formulas
+        We can convert feature models to propositional formulas!
+        \begin{equation*}
+            (\text{x86} \land \neg \text{arm64}) \lor (\neg \text{x86} \land \text{arm64}) ...
+        \end{equation*}
     \end{block}
 \end{frame}
 \subsection{Feature-Model Slicing}
@@ -182,7 +112,95 @@ Worst-case exponential complexity!
 	\end{block}
     
 \end{frame}
-
+\begin{frame}{Model Counting}
+   
+    
+    \begin{block}{Problem}
+    \begin{itemize}
+        \item  {\color{red} How many} hardware configurations?\pause
+        \item Counting the number of satisfiable assignments of a propositional formula $F$. Denoted as $|F|$.
+    \end{itemize}    
+    
+    \vspace{0.5cm}
+    \begin{displaymath}
+        \begin{array}{|c c|c|}
+        % |c c|c| means that there are three columns in the table and
+        % a vertical bar ’|’ will be printed on the left and right borders,
+        % and between the second and the third columns.
+        % The letter ’c’ means the value will be centered within the column,
+        % letter ’l’, left-aligned, and ’r’, right-aligned.
+        p & q & F=a \land b\\ % Use & to separate the columns
+        \hline % Put a horizontal line between the table header and the rest.
+        \color{blue}1 & \color{blue}1 & \color{blue}1\\
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & 0\\
+        \end{array}
+        \end{displaymath}
+    
+    \end{block}
+    \centering\pause
+    \begin{tikzpicture}[]
+        \node[draw](sharpsat){\color{magenta} \bf \#SAT};
+    \end{tikzpicture}\\
+    Counts the number of solutions of a propositional formula. \\
+    Worst-case exponential complexity!
+    \end{frame}
+    \begin{frame}{d-DNNF}
+        \begin{columns}[]
+            \begin{column}{.5\textwidth}
+                Any propositional formula which is:\\
+                \begin{block}<1->{{\bf d}eterministic}
+                    Exclusive or-operators $F=A \lor B$\\
+                    Never simultaneous $A=1$ and $B=1$\\
+                    If-then-else\\
+                    $|F|=|A|+|B|$\\
+                \end{block}
+                \begin{block}<3->{{\bf D}ecomposable}
+                    And-operands $F=A \land B$ never share variables\\
+                    $|F|=|A|*|B|$\\
+                \end{block}
+                \begin{block}<5->{{\bf N}egation {\bf N}ormal {\bf F}orm}
+                \end{block}
+            \end{column}
+            \begin{column}{.5\textwidth}
+                \begin{center}
+                    
+               
+                \only<1-2>{
+                \begin{forest}
+                    for tree={ s sep+=12pt,
+                    l sep+=12pt}
+                    [$\lor$
+                        [$a \land b$]
+                        [$c \land \only<2>{\neg} b$],edge label={node[midway,left,font=\scriptsize]{1}}
+                    ] 
+                \end{forest}}
+                \only<3->{
+                    \begin{forest}
+                        for tree={ s sep+=12pt,
+                        l sep+=12pt}
+                        [$\land$
+                            [$a\lor b$]
+                            [${\color{red}\only<3>{b}}{\color{green}\only<4->{d}}\lor c$],edge label={node[midway,left,font=\scriptsize]{1}}
+                        ] 
+                    \end{forest}}\\
+                \vspace{0.1cm}
+                \only<1>{Not a d-DNNF {\color{red} \xmark}}
+                \only<2>{A d-DNNF {\color{green} \checkmark}}
+                \only<3>{Not a d-DNNF {\color{red} \xmark}}
+                \only<4>{A d-DNNF {\color{green} \checkmark}}
+            \end{center}
+            \end{column}
+            
+        \end{columns}
+        \visible<6->{
+        \begin{center}
+            {\bf d-DNNF formulas allow linear-time model counting\\
+            d-DNNF Compilation: CNF $\rightarrow$ d-DNNF\\
+            Knowledge-Compilation: It's still just a formula }}
+        \end{center}
+    \end{frame}
 
 \begin{frame}{\insertsubsection}
 	\begin{block}{Problem}
@@ -222,13 +240,13 @@ Worst-case exponential complexity!
     \begin{block}<1->{Resolving Two Clauses}
         \begin{equation*}
             \begin{split}
-            (a_1 \lor a_2 \lor  ...  \lor v), (b_1 \lor b_2 \lor  ... \lor \neg v) & \rightarrow (a_1 \lor a_2 \lor  ... \lor b_1 \lor b_2 \lor ...)\\
+            (\neg VideoEncoding \lor Windows), (x86 \lor \neg Windows) &\rightarrow (\neg VideoEncoding \lor x86)\\
+            \visible<2->{ (a_1 \lor a_2 \lor  ...  \lor v), (b_1 \lor b_2 \lor  ... \lor \neg v) & \rightarrow (a_1 \lor a_2 \lor  ... \lor b_1 \lor b_2 \lor ...)}
            % (VideoEncoding \implies Windows), (x86 \implies Windows) &\rightarrow (VideoEncoding  \implies x86)\\
-            (\neg VideoEncoding \lor Windows), (x86 \lor \neg Windows) &\rightarrow (\neg VideoEncoding \lor x86)
             \end{split}
         \end{equation*}
     \end{block}
-    \begin{block}<2->{Resolving Many Clauses}
+    \begin{block}<3->{Resolving Many Clauses}
         \begin{center}
         \begin{tikzpicture}
             \node (l1) {$(a_{11} \lor a_{12} \lor ... \lor v)$};
@@ -349,40 +367,43 @@ Worst-case exponential complexity!
 \end{column}
 \end{columns}
 \end{frame}
-\begin{frame}{Variable Ordering}
-    Vanilla DPLL has $O(2^n)$ runtime
-    \begin{center}
-    \only<1-2>{
-    \visible<2>{
-    \begin{tikzpicture}[every tree node/.style={},
-        level distance=1.25cm,sibling distance=1cm,
-        scale=0.9,
-        edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}]
-     \Tree
-     [. \node[]{$(a \lor b \lor c) \land (\neg a \lor b  \lor \neg d ) \land (c \lor e)$};
-         \edge[] node[auto=right] {$a$};
-        [. \node[]{$( b  \lor \neg d ) \land (c \lor e)$ };]
-        \edge[] node[auto=left] {$\neg a$};
-        [.\node[]{$(b \lor c) \land (c \lor e)$};]
-     ]
-     \end{tikzpicture}}}
-     \only<3>{
-     \begin{tikzpicture}[every tree node/.style={},
-        level distance=1.25cm,sibling distance=1cm,
-        scale=0.9,
-        edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}]
-     \Tree
-     [. \node[]{$(a \lor b \lor c) \land (\neg a \lor b  \lor \neg d ) \land (c \lor e)$};
-         \edge[] node[auto=right] {$d$};
-        [. \node[]{$(a \lor b  \lor  c ) \land (\neg a \lor b) \land (c \lor e)$ };]
-        \edge[] node[auto=left] {$\neg d$};
-        [.\node[]{$(a \lor b  \lor  c ) \land (c \lor e)$};]
-     ]
-     \end{tikzpicture}}
-    \end{center}
+\begin{frame}{Heuristics}
+    Vanilla DPLL is very slow
+    \begin{block}<2->{Variable Odering}
+        \begin{center}
+            \only<1-2>{
+            \visible<2>{
+            \begin{tikzpicture}[every tree node/.style={},
+                level distance=1.25cm,sibling distance=1cm,
+                scale=0.9,
+                edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}]
+             \Tree
+             [. \node[]{$(a \lor b \lor c) \land (\neg a \lor b  \lor \neg d ) \land (c \lor e)$};
+                 \edge[] node[auto=right] {$a$};
+                [. \node[]{$( b  \lor \neg d ) \land (c \lor e)$ };]
+                \edge[] node[auto=left] {$\neg a$};
+                [.\node[]{$(b \lor c) \land (c \lor e)$};]
+             ]
+             \end{tikzpicture}}}
+             \only<3>{
+             \begin{tikzpicture}[every tree node/.style={},
+                level distance=1.25cm,sibling distance=1cm,
+                scale=0.9,
+                edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}]
+             \Tree
+             [. \node[]{$(a \lor b \lor c) \land (\neg a \lor b  \lor \neg d ) \land (c \lor e)$};
+                 \edge[] node[auto=right] {$d$};
+                [. \node[]{$(a \lor b  \lor  c ) \land (\neg a \lor b) \land (c \lor e)$ };]
+                \edge[] node[auto=left] {$\neg d$};
+                [.\node[]{$(a \lor b  \lor  c ) \land (c \lor e)$};]
+             ]
+             \end{tikzpicture}}
+            \end{center}
+    \end{block}
+    
 \end{frame}
 
-\begin{frame}{Dual Hypergraph: CNF to Graph}
+\begin{frame}{Heuristics: Dual Hypergraph}
     \begin{center}
         
 
@@ -474,32 +495,15 @@ Worst-case exponential complexity!
 \end{block}
 \end{frame}
 \begin{frame}{Integration and Optimization in D4\footnote{An Improved Decision-DNNF Compiler, Lagniez et al.}}
-    \begin{columns}
-        \begin{column}{.6\textwidth}
-            Two approaches:  Better Preprocessing, Faster DPLL
-        \end{column}
-        \begin{column}{.4\textwidth}
-            \begin{tikzpicture}
-                \node[draw,minimum size=0.5cm] (prep){Preprocessing};
-                
-                \node[draw,right = 1cm of prep,minimum size=0.5cm] (dpll){DPLL};
-                \draw[draw,->] (prep) -- (dpll); 
-                \draw[decoration={brace,mirror,raise=5pt},decorate]
-                                    (-1,-0.2) -- node[below=6pt] {Make problem small} (1,-0.2);
-                \draw[decoration={brace,mirror,raise=5pt},decorate]
-                                    (1.9,-0.2) -- node[below=6pt] {Make efficient} (2.95,-0.2);
-            \end{tikzpicture}
-        \end{column}
-    \end{columns}
-    \begin{block}{Contributions}
-       
-        \begin{itemize}
-            \item New dual weighted hypergraph partitioning heuristic
-            \item Dynamic pure Literal elimination
-            \item New partial resolution preprocessing heuristic based upon GPMC\footnote{\href{https://git.trs.css.i.nagoya-u.ac.jp/k-hasimt/GPMC}{https://git.trs.css.i.nagoya-u.ac.jp/k-hasimt/GPMC}}
-            \item Integration of multiple established preprocessing methods
-        \end{itemize}
-    \end{block}
+    \begin{center}
+        
+    \begin{tikzpicture}[nodes={shape=signal,signal from=west, signal to=east,
+        align=left,font=\sffamily,draw,on chain,minimum height=2cm,
+        inner xsep=1em},start chain=going right,node distance=1ex]
+     \path node[signal from=nowhere]{{\bf Preprocessing}\\New partial resolution heuristic\\Integration of existing work\\}   
+       node{{\bf DPLL} \\ Dual weighted hypergraph partitioning\\ Integration of existing work };
+    \end{tikzpicture}
+    \end{center}
 \end{frame}
 \begin{frame}{Dual Weighted Hypergraph Partitioning}
 
@@ -599,7 +603,7 @@ Sliced variables = $c,e$\\
 \only<5-7>{
  
 \begin{block}{Connectivity}
-    $(\neg a \lor b \lor v),(a \lor c \lor d \lor \neg v) \rightarrow (\neg a \lor b \lor a \lor c)\equiv \top$\\
+    $(\neg a \lor b \lor v),(a \lor b \lor \neg v) \rightarrow (\neg a \lor b \lor b \lor c)\equiv \top$\\
     \vspace{0.1cm}
     \visible<6->{{{\bf Simpical Variable~\footnotemark[1]}: neighbors form a clique through clauses}}\\
     \visible<7->{
@@ -616,8 +620,6 @@ Sliced variables = $c,e$\\
            }
         }
       \end{tikzpicture}\\
-      {\bf Tree-likeness of Clauses $\cong$ Problem Complexity}\\
-      {\bf Preserves tree-like structure}
     \end{center}}
 
     \only<6->{{\footnotesize \footnotemark[1]from GPMC source code}}
@@ -674,6 +676,16 @@ Sliced variables = $c,e$\\
         \item {\bf arjun}: 3rd place projected model counter in MC2022
     \end{itemize}
 \end{block}
+\begin{block}{Data}
+    \begin{itemize}
+        \item {\bf Industrial Projection}: Real feature model slicing problems
+        \item {\bf Generated Projection}: Adding randomly selected projected variables to real feature models
+        \item {\bf MC2022}: Private+Public instances from the MC2022 (many unknown sources...)
+    \end{itemize}
+\end{block}
+\begin{block}{Questions}
+    Compare runtime performance and d-DNNF size
+\end{block}
 
 \end{frame}
 
@@ -712,9 +724,10 @@ Sliced variables = $c,e$\\
     \begin{block}{Future Work}
         Lots of new possible heuristics...\\ \pause
         Hardware acceleration...\\ \pause
-        More applications for projected output d-DNNF \pause
+        More applications for projected output d-DNNF 
     \end{block}
 
 \end{frame}
-
+\begin{frame}{The End}
+\end{frame}
 \end{document}
