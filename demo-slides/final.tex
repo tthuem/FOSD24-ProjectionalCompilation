@@ -7,7 +7,9 @@
 	%sectionoverviews, % enable an automatic section overview at the begin of each section
 ]{beamer}
 
-\usepackage{../beamerthemeuulm} % use the inofficial uulm beamer theme
+\usepackage{../fancybeamer}
+\setpaths{{../pics/}{../pics/upb}}
+
 \usepackage{tikz}
 \usepackage{amsmath,amssymb}
 \usepackage{xcolor}
@@ -31,7 +33,6 @@
 
 \newcommand{\VarName}[1]{\textnormal{\emph{#1}}}
 \usetikzlibrary{decorations.pathreplacing,calligraphy}
-\setfaculty{infIngPsy} % set the color scheme for your faculty here [med/infIngPsy/math/nat]
 \usetikzlibrary{positioning}
 \usetikzlibrary{overlay-beamer-styles}
 \usetikzlibrary{arrows.meta}
@@ -56,152 +57,189 @@
 
 %\includeonlyframes{current} % default mechanism of beamer to include only labeled frames, can be used for debugging or drafting
 
-\title[Projected d-DNNF Compilation]{Projected d-DNNF Compilation for Feature Models} % short title is used for the slide footer but optional
-\subtitle{Master's Thesis} % subtitles are optional at all
-\author[Jacob Loth]{Jacob Loth} % short author title is used for the slide footer but optional
-\date{\today} % use a particular date here if needed
+\title{Projected d-DNNF Compilation for Feature Models} % short title is used for the slide footer but optional
+\subtitle[A Master's Thesis]{Master's Thesis by Jacob Loth, supervised by Chico Sundermann} % subtitles are optional at all
+\author{Thomas Thüm} % short author title is used for the slide footer but optional
+\date{April 9, 2024} % use a particular date here if needed
 
 \begin{document}
+	
+\contentoverview[2]
 
-\maketitle % title page with default picture
+\maketitle[image7] % title page with default picture
 
-\section{Motivation}
+\begin{frame}{The Boring Agenda Slide}
+		\begin{fancycolumns}[t,columns=3,animation=keep,reverse]
+		\setlength{\parskip}{.5ex}\tableofcontents[sections={1}]
+		\nextcolumn
+		\setlength{\parskip}{.5ex}\tableofcontents[sections={2}]
+		\nextcolumn
+		\setlength{\parskip}{.5ex}\tableofcontents[sections={3}]
+	\end{fancycolumns}
+\end{frame}
 
-\subsection{Feature Models}
+\section{What is this session about? (Bonus)}
+
+\subsection{What is a feature model?}
+\begin{frame}{\insertsubsection}
+	mockup: this slide shows a feature model with 42 valid configurations
+\end{frame}
+
+\section{What you need to know about math?}
+
+\subsection{How to compute 42?}
+\begin{frame}{\insertsubsection\hfill{}\normalsize{}Deterministic Decomposable Negation Normal Form (d-DNNF)}
+	\begin{fancycolumns}[animation=none]
+		\centering\pic[height=70mm,trim={0\width} {.1\height} {.42\width} {.1\height},clip,page=5]{pD4}
+	\nextcolumn
+	\end{fancycolumns}
+\end{frame}
+
+\subsection{How to compute other numbers?}
+\begin{frame}{\insertsubsection\hfill{}Queries}
+	\begin{fancycolumns}
+		\centering\pic[height=70mm,trim={0\width} {.1\height} {.42\width} {.1\height},clip,page=5]{pD4}
+		\nextcolumn
+		How many configurations of cars with Bluetooth?
+	\end{fancycolumns}
+\end{frame}
+\begin{frame}{\insertsubsection\hfill{}Projections (Slices)}
+	\begin{fancycolumns}
+		\centering\pic[height=70mm,trim={0\width} {.1\height} {.42\width} {.1\height},clip,page=5]{pD4}
+		\nextcolumn
+		How many software configurations are there?
+	\end{fancycolumns}
+\end{frame}
+
+\section{Why should you care about this thesis?}
+
+\subsection{Is it novel?}
+\begin{frame}{\insertsubsection\hfill{}Projection + Compilation = Projected Compilation}
+	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.3\height},clip,page=9]{pD4}
+\end{frame}
+
+\subsection{Is it significant?}
+\begin{frame}{\insertsubsection\hfill{}Projected Model Counting Competition 2022}
+	\includegraphics[width=\linewidth]{exp3}
+\end{frame}
+
+\subsection{Is it sound?}
+\begin{frame}{\insertsubsection\hfill{}Random Projections on Feature Models}
+	\centering\includegraphics[width=\linewidth]{exp2}
+\end{frame}
+\begin{frame}{\insertsubsection\hfill{}Real Projections from Automotive Industry}
+	\centering\includegraphics[width=\linewidth]{exp1}
+\end{frame}
+
+\subsection{Is it verifiable?}
+\begin{frame}{\insertsubsection}
+	mockup: this slide shows a screenshot from the github project / replication package / or point to the thesis? is it public?
+\end{frame}
+
+\subsection{Is it clear?}
+\begin{frame}{\insertsubsection\hfill{}Projected d-DNNF Compilation for Feature Models}
+	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.4\height},clip,page=9]{pD4}
+	\begin{fancycolumns}[widths={52}]
+		\begin{note}{Projected Compilation = Projection + Compilation}
+			projected d-DNNF compilation \ldots
+			\begin{itemize}
+				\item is faster than projection / slicing (our  goal)
+				\item is faster than projected model counting (unexpected, due to many optimizations)
+				\item is much faster for multiple queries (expected)
+				\item produces d-DNNFs of comparable/smaller size
+				\item is the first instance of projected compilation
+			\end{itemize}
+		\end{note}
+		\nextcolumn
+		\includegraphics[width=\linewidth]{exp3}		
+	\end{fancycolumns}
+\end{frame}
+
+\subsection{(Is it great research?)}
+
+\section{More Details Wanted?}
+
+\subsection{Feature Models and Conjunctive Normal Forms}
 \begin{frame}{\insertsubsection}
 	\centering
 	\includegraphics[width=10cm]{fm.png}
-    \begin{block}{}
-        We can convert feature models to propositional formulas!
-        \begin{equation*}
-            (\text{x86} \land \neg \text{arm64}) \lor (\neg \text{x86} \land \text{arm64}) ...
-        \end{equation*}
-    \end{block}
+	\begin{block}{}
+		We can convert feature models to propositional formulas!
+		\begin{equation*}
+			(\text{x86} \land \neg \text{arm64}) \lor (\neg \text{x86} \land \text{arm64}) ...
+		\end{equation*}
+	\end{block}
 \end{frame}
-\subsection{Feature-Model Slicing}
+
+\subsection{Feature-Model Slicing / Projection of Formulas}
 \tikzstyle{tree}=[draw=black,thick,anchor=west]
 \tikzstyle{selected}=[draw=red,fill=red!30]
 \tikzstyle{optional}=[dashed,fill=gray!50]
 \begin{frame}{\insertsubsection}
 	\begin{block}{Feature Model}
-	\centering
-	\begin{tikzpicture}[%
-	  grow via three points={one child at (0.5,-0.7) and
-	  two children at (0.5,-0.7) and (0.5,-1.4)},
-	  edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
-	\node[tree](hw) {Hardware}
-		child { node[tree] {arm64}}		
-		child { node[tree] {x86}}
-		child { node[tree] {VideoEncoding}};
-	\node[tree](sw)[right = 4cm of hw] {Software}
-		child { node[tree] {Windows}}	
-		child { node[tree] {Linux}}			
-		child { node[tree] {Packages*}};
-	\draw[<->, visible on=<2->] (sw) -- (hw) node[midway,fill=white] {\emph{constraints}};
-	\end{tikzpicture}
+		\centering
+		\begin{tikzpicture}[%
+			grow via three points={one child at (0.5,-0.7) and
+				two children at (0.5,-0.7) and (0.5,-1.4)},
+			edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+			\node[tree](hw) {Hardware}
+			child { node[tree] {arm64}}		
+			child { node[tree] {x86}}
+			child { node[tree] {VideoEncoding}};
+			\node[tree](sw)[right = 4cm of hw] {Software}
+			child { node[tree] {Windows}}	
+			child { node[tree] {Linux}}			
+			child { node[tree] {Packages*}};
+			\draw[<->, visible on=<2->] (sw) -- (hw) node[midway,fill=white] {\emph{constraints}};
+		\end{tikzpicture}
 	\end{block}
 	\begin{block}<3->{Problem}
 		How many hardware configurations?
 	\end{block}
 	\begin{block}<4->{Transitive Constraints}
-
+		
 		\begin{tabular}[t]{cc}
 			$\text{VideoEncoding} \implies \text{Windows}$&\visible<5>{  \hspace{0.5cm}$\text{Sliced: VideoEncoding} \implies \text{x86}$}\\
 			$\text{Windows}\implies \text{x86}$ &
 		\end{tabular}
 	\end{block}
-    
 \end{frame}
-\begin{frame}{Model Counting}
-   
-    
-    \begin{block}{Problem}
-    \begin{itemize}
-        \item  {\color{red} How many} hardware configurations?\pause
-        \item Counting the number of satisfiable assignments of a propositional formula $F$. Denoted as $|F|$.
-    \end{itemize}    
-    
-    \vspace{0.5cm}
-    \begin{displaymath}
-        \begin{array}{|c c|c|}
-        % |c c|c| means that there are three columns in the table and
-        % a vertical bar ’|’ will be printed on the left and right borders,
-        % and between the second and the third columns.
-        % The letter ’c’ means the value will be centered within the column,
-        % letter ’l’, left-aligned, and ’r’, right-aligned.
-        p & q & F=a \land b\\ % Use & to separate the columns
-        \hline % Put a horizontal line between the table header and the rest.
-        \color{blue}1 & \color{blue}1 & \color{blue}1\\
-        1 & 0 & 0\\
-        0 & 1 & 0\\
-        0 & 0 & 0\\
-        \end{array}
-        \end{displaymath}
-    
-    \end{block}
-    \centering\pause
-    \begin{tikzpicture}[]
-        \node[draw](sharpsat){\color{magenta} \bf \#SAT};
-    \end{tikzpicture}\\
-    Counts the number of solutions of a propositional formula. \\
-    Worst-case exponential complexity!
-    \end{frame}
-    \begin{frame}{d-DNNF}
-        \begin{columns}[]
-            \begin{column}{.5\textwidth}
-                Any propositional formula which is:\\
-                \begin{block}<1->{{\bf d}eterministic}
-                    Exclusive or-operators $F=A \lor B$\\
-                    Never simultaneous $A=1$ and $B=1$\\
-                    If-then-else\\
-                    $|F|=|A|+|B|$\\
-                \end{block}
-                \begin{block}<3->{{\bf D}ecomposable}
-                    And-operands $F=A \land B$ never share variables\\
-                    $|F|=|A|*|B|$\\
-                \end{block}
-                \begin{block}<5->{{\bf N}egation {\bf N}ormal {\bf F}orm}
-                \end{block}
-            \end{column}
-            \begin{column}{.5\textwidth}
-                \begin{center}
-                    
-               
-                \only<1-2>{
-                \begin{forest}
-                    for tree={ s sep+=12pt,
-                    l sep+=12pt}
-                    [$\lor$
-                        [$a \land b$]
-                        [$c \land \only<2>{\neg} b$],edge label={node[midway,left,font=\scriptsize]{1}}
-                    ] 
-                \end{forest}}
-                \only<3->{
-                    \begin{forest}
-                        for tree={ s sep+=12pt,
-                        l sep+=12pt}
-                        [$\land$
-                            [$a\lor b$]
-                            [${\color{red}\only<3>{b}}{\color{green}\only<4->{d}}\lor c$],edge label={node[midway,left,font=\scriptsize]{1}}
-                        ] 
-                    \end{forest}}\\
-                \vspace{0.1cm}
-                \only<1>{Not a d-DNNF {\color{red} \xmark}}
-                \only<2>{A d-DNNF {\color{green} \checkmark}}
-                \only<3>{Not a d-DNNF {\color{red} \xmark}}
-                \only<4>{A d-DNNF {\color{green} \checkmark}}
-            \end{center}
-            \end{column}
-            
-        \end{columns}
-        \visible<6->{
-        \begin{center}
-            {\bf d-DNNF formulas allow linear-time model counting\\
-            d-DNNF Compilation: CNF $\rightarrow$ d-DNNF\\
-            Knowledge-Compilation: It's still just a formula }}
-        \end{center}
-    \end{frame}
 
+\subsection{Model Counting}
+\begin{frame}{\insertsubsection}
+	\begin{block}{Problem}
+		\begin{itemize}
+			\item  {\color{red} How many} hardware configurations?\pause
+			\item Counting the number of satisfiable assignments of a propositional formula $F$. Denoted as $|F|$.
+		\end{itemize}    
+		
+		\vspace{0.5cm}
+		\begin{displaymath}
+			\begin{array}{|c c|c|}
+				% |c c|c| means that there are three columns in the table and
+				% a vertical bar ’|’ will be printed on the left and right borders,
+				% and between the second and the third columns.
+				% The letter ’c’ means the value will be centered within the column,
+				% letter ’l’, left-aligned, and ’r’, right-aligned.
+				p & q & F=a \land b\\ % Use & to separate the columns
+				\hline % Put a horizontal line between the table header and the rest.
+				\color{blue}1 & \color{blue}1 & \color{blue}1\\
+				1 & 0 & 0\\
+				0 & 1 & 0\\
+				0 & 0 & 0\\
+			\end{array}
+		\end{displaymath}
+		
+	\end{block}
+	\centering\pause
+	\begin{tikzpicture}[]
+		\node[draw](sharpsat){\color{magenta} \bf \#SAT};
+	\end{tikzpicture}\\
+	Counts the number of solutions of a propositional formula. \\
+	Worst-case exponential complexity!
+\end{frame}
+
+\subsection{Projected Model Counting}
 \begin{frame}{\insertsubsection}
 	\begin{block}{Problem}
 		\only<1>{{\color{red} How many} hardware configurations?}
@@ -209,33 +247,95 @@
 		\only<3->{ How many hardware configurations {\color{red} with X ?}}
 	\end{block}
 	\only<0->{
-	\begin{tikzpicture}[]
-		\node[tree](fm){Feature-Model};
-		\node[tree,right= 0.5cm of fm](cnf){\begin{tabular}{c} CNF: \\ $(A \lor B \lor \neg C) \land (\neg B \lor \neg C) \dots$  \end{tabular}};
-		\node[tree,tree,right= 0.5cm of cnf,visible on = <1-6>](slice){\begin{tabular}{c} Slice:\\$(A \lor B)\land (\neg B)\dots$\end{tabular}};
-		\node[right= 1.5cm of slice,visible on=<1-3>,draw](sharpsat){\color{magenta} \bf \#SAT };
-		\node[below= 0.7cm of sharpsat,visible on=<2-3>,draw](sharpsat1){\color{magenta} \bf \#SAT};
-		\node[above= 0.7cm of sharpsat,visible on=<3-3>](sharpsatN){$...$};
-		\node[right= 1.0cm of slice,visible on=<4-6>,draw](ddnnf){\color{magenta} \bf \begin{tabular}{c}d-DNNF\\Compilation\end{tabular} };
-		\node[above= 0.5cm of ddnnf,visible on=<5-6>,draw=black,thick](queries){\begin{tabular}{l} Counting Queries:\\arm64=true\\ $\dots$ \end{tabular} };
-        \node[right= 1.0cm of cnf,visible on=<7>,draw](pmc){\color{magenta} \bf \begin{tabular}{c}Projected\\Model\\Counting\end{tabular}  };
-		\node[right= 1.0cm of cnf,visible on=<8>,draw](pddnnf){\color{magenta} \bf \begin{tabular}{c}Projected\\d-DNNF\\Compilation\end{tabular}  };
-		\node[above= 0.5cm of pddnnf,visible on=<8>,draw=black,thick](queries1){\begin{tabular}{l} Counting Queries:\\arm64=true\\ $\dots$ \end{tabular} };
-		\draw[->] (fm)--(cnf);
-		\draw[->,visible on = <1-6>] (cnf)--(slice);
-		\draw[->,visible on = <1-3>] (slice)--(sharpsat);
-		\draw[->,visible on=<2-3>] (slice.east)--(sharpsat1.west) node[near end,left] {arm64=true};
-		\draw[->,visible on=<3-3>] (slice.east)--(sharpsatN.west);
-        \draw[->,visible on=<4-6>] (slice.east)--(ddnnf);
-		\draw[->,visible on=<5-6>] (queries)--(ddnnf);
-        \draw[->,visible on=<7>] (cnf)--(pmc);
-		\draw[->,visible on=<8>] (cnf)--(pddnnf);
-		\draw[->,visible on=<8>] (queries1)--(pddnnf);
-		\draw [decorate,
-    decoration = {brace},thick,red,visible on = <6>] (11,-0.75) --  (7.3,-0.75) node[midway,below] {can be slow};
+		\begin{tikzpicture}[]
+			\node[tree](fm){Feature-Model};
+			\node[tree,right= 0.5cm of fm](cnf){\begin{tabular}{c} CNF: \\ $(A \lor B \lor \neg C) \land (\neg B \lor \neg C) \dots$  \end{tabular}};
+			\node[tree,tree,right= 0.5cm of cnf,visible on = <1-6>](slice){\begin{tabular}{c} Slice:\\$(A \lor B)\land (\neg B)\dots$\end{tabular}};
+			\node[right= 1.5cm of slice,visible on=<1-3>,draw](sharpsat){\color{magenta} \bf \#SAT };
+			\node[below= 0.7cm of sharpsat,visible on=<2-3>,draw](sharpsat1){\color{magenta} \bf \#SAT};
+			\node[above= 0.7cm of sharpsat,visible on=<3-3>](sharpsatN){$...$};
+			\node[right= 1.0cm of slice,visible on=<4-6>,draw](ddnnf){\color{magenta} \bf \begin{tabular}{c}d-DNNF\\Compilation\end{tabular} };
+			\node[above= 0.5cm of ddnnf,visible on=<5-6>,draw=black,thick](queries){\begin{tabular}{l} Counting Queries:\\arm64=true\\ $\dots$ \end{tabular} };
+			\node[right= 1.0cm of cnf,visible on=<7>,draw](pmc){\color{magenta} \bf \begin{tabular}{c}Projected\\Model\\Counting\end{tabular}  };
+			\node[right= 1.0cm of cnf,visible on=<8>,draw](pddnnf){\color{magenta} \bf \begin{tabular}{c}Projected\\d-DNNF\\Compilation\end{tabular}  };
+			\node[above= 0.5cm of pddnnf,visible on=<8>,draw=black,thick](queries1){\begin{tabular}{l} Counting Queries:\\arm64=true\\ $\dots$ \end{tabular} };
+			\draw[->] (fm)--(cnf);
+			\draw[->,visible on = <1-6>] (cnf)--(slice);
+			\draw[->,visible on = <1-3>] (slice)--(sharpsat);
+			\draw[->,visible on=<2-3>] (slice.east)--(sharpsat1.west) node[near end,left] {arm64=true};
+			\draw[->,visible on=<3-3>] (slice.east)--(sharpsatN.west);
+			\draw[->,visible on=<4-6>] (slice.east)--(ddnnf);
+			\draw[->,visible on=<5-6>] (queries)--(ddnnf);
+			\draw[->,visible on=<7>] (cnf)--(pmc);
+			\draw[->,visible on=<8>] (cnf)--(pddnnf);
+			\draw[->,visible on=<8>] (queries1)--(pddnnf);
+			\draw [decorate,
+			decoration = {brace},thick,red,visible on = <6>] (11,-0.75) --  (7.3,-0.75) node[midway,below] {can be slow};
 	\end{tikzpicture}}
 \end{frame}
-\begin{frame}{Slicing Implementation\footnote{Comparing Algorithms for Efficient Feature-Model Slicing, Krieter et al.}}
+
+\subsection{Deterministic Decomposable Negation Normal Form (d-DNNF)}
+\begin{frame}{\insertsubsection}
+	\begin{columns}[]
+		\begin{column}{.5\textwidth}
+			Any propositional formula which is:
+			
+			\begin{block}<1->{{\bf d}eterministic}
+				Exclusive or-operators $F=A \lor B$\\
+				Never simultaneous $A=1$ and $B=1$\\
+				If-then-else\\
+				$|F|=|A|+|B|$\\
+			\end{block}
+			\begin{block}<3->{{\bf D}ecomposable}
+				And-operands $F=A \land B$ never share variables\\
+				$|F|=|A|*|B|$\\
+			\end{block}
+			\begin{block}<5->{{\bf N}egation {\bf N}ormal {\bf F}orm}
+			\end{block}
+		\end{column}
+		\begin{column}{.5\textwidth}
+			\begin{center}
+				
+				
+				\only<1-2>{
+					\begin{forest}
+						for tree={ s sep+=12pt,
+							l sep+=12pt}
+						[$\lor$
+						[$a \land b$]
+						[$c \land \only<2>{\neg} b$],edge label={node[midway,left,font=\scriptsize]{1}}
+						] 
+				\end{forest}}
+				\only<3->{
+					\begin{forest}
+						for tree={ s sep+=12pt,
+							l sep+=12pt}
+						[$\land$
+						[$a\lor b$]
+						[${\color{red}\only<3>{b}}{\color{green}\only<4->{d}}\lor c$],edge label={node[midway,left,font=\scriptsize]{1}}
+						] 
+				\end{forest}}\\
+				\vspace{0.1cm}
+				\only<1>{Not a d-DNNF {\color{red} \xmark}}
+				\only<2>{A d-DNNF {\color{green} \checkmark}}
+				\only<3>{Not a d-DNNF {\color{red} \xmark}}
+				\only<4>{A d-DNNF {\color{green} \checkmark}}
+			\end{center}
+		\end{column}
+		
+	\end{columns}
+	\visible<6->{
+		\begin{center}
+			{\bf d-DNNF formulas allow linear-time model counting\\
+				d-DNNF compilation: CNF $\rightarrow$ d-DNNF\\
+				knowledge compilation: It's still just a formula }}
+	\end{center}
+\end{frame}
+
+\renewcommand{\footnote}[1]{\hfill{}\footnotesize{}[#1]}
+
+\subsection{Slicing Implementation}
+\begin{frame}{\insertsubsection\footnote{Comparing Algorithms for Efficient Feature-Model Slicing, Krieter et al.}}
     Resolve all clauses with $v$ with all clauses with $\neg v$
     \begin{block}<1->{Resolving Two Clauses}
         \begin{equation*}
@@ -273,26 +373,15 @@
         }
     \end{center}
     \end{block}
-    
-    
 \end{frame}
 
-
-
-
-
 \subsection{d-DNNF Compilation}
-
 \begin{frame}{\insertsubsection}
 	\begin{columns}[c]
 		\begin{column}{.5\textwidth}
 	\centering
 	\begin{block}{DPLL}
 	\begin{overlayarea}{10cm}{4.44cm}
-		
-
-		
-
 	\begin{tikzpicture}[every tree node/.style={},
 	level distance=1.25cm,sibling distance=1cm,
 	scale=0.9,
@@ -326,8 +415,6 @@
  ]
  \end{tikzpicture}
 \end{overlayarea}
-
-
 \end{block}
 \end{column}
 \begin{column}{.5\textwidth}
@@ -361,14 +448,14 @@
 	\begin{block}<8>{}
 		\hspace{1cm} ITE = If Then Else
 	\end{block}
-
-	
-
 \end{column}
 \end{columns}
 \end{frame}
-\begin{frame}{Heuristics}
+
+\subsection{Heuristics}
+\begin{frame}{\insertsubsection}
     Vanilla DPLL is very slow
+    
     \begin{block}<2->{Variable Odering}
         \begin{center}
             \only<1-2>{
@@ -400,13 +487,11 @@
              \end{tikzpicture}}
             \end{center}
     \end{block}
-    
 \end{frame}
 
-\begin{frame}{Heuristics: Dual Hypergraph}
+\subsection{Heuristics: Dual Hypergraph}
+\begin{frame}{\insertsubsection}
     \begin{center}
-        
-
     \begin{tikzpicture}
         [
             he/.style={draw, semithick},        % he = hyper edge
@@ -441,7 +526,6 @@
                 %$\node [ce, fit=(g) (e)] {};
                 %\node [fit=(a) (b) (d)] (fd){};%\draw [dashed,rounded corners=10pt] ($(fd.south west)+(0,-0.5)$) -- (fd.north west) -- ($(fd.north east)+(0.5,0)$)--cycle;
                 \end{tikzpicture}}
-   
         \end{center}
         \begin{block}{Construction}
             $F=\underset{c_1}{({\color{blue}a} \lor {\color{red}b})} \land \underset{c_2}{({\color{blue}a} \lor \neg {\color{green}c})} \land \underset{c_3}{({\color{blue}a} \lor \neg {\color{brown}d})} \land 
@@ -451,11 +535,10 @@
                 \bf Split formula into independent sub-problems of roughly equal size.\\
             \end{center}
         \end{block}
-         
 \end{frame}
-\section{Our Contributions}
 
-\begin{frame}[fragile]{Projected d-DNNF Compilation}
+\subsection{Projected d-DNNF Compilation}
+\begin{frame}[fragile]{\insertsubsection}
 	\begin{block}{Concept}
 	Projected variables = $a,b,d$\\
 	Sliced variables = $c,e$
@@ -494,7 +577,9 @@
 \end{overlayarea}
 \end{block}
 \end{frame}
-\begin{frame}{Integration and Optimization in D4\footnote{An Improved Decision-DNNF Compiler, Lagniez et al.}}
+
+\subsection{Integration and Optimization in D4}
+\begin{frame}{\insertsubsection\footnote{An Improved Decision-DNNF Compiler, Lagniez et al.}}
     \begin{center}
         
     \begin{tikzpicture}[nodes={shape=signal,signal from=west, signal to=east,
@@ -505,12 +590,11 @@
     \end{tikzpicture}
     \end{center}
 \end{frame}
-\begin{frame}{Dual Weighted Hypergraph Partitioning}
 
+\subsection{Dual Weighted Hypergraph Partitioning}
+\begin{frame}{\insertsubsection}
       \begin{center}
-        
-  
-        \begin{tikzpicture}
+            \begin{tikzpicture}
             [
                 he/.style={draw, semithick},        % he = hyper edge
                 ce/.style={draw,dashed, rounded corners=10pt}, % ce = condition edge
@@ -552,19 +636,20 @@
         \end{center}
         $F=c_0\land c_1 \land ... \land c_{15}$
 \end{frame}
-\begin{frame}[t]{Partial Resolution}
+
+\subsection{Partial Resolution}
+\begin{frame}[t]{\insertsubsection}
 \vspace{0.5cm}
-Greedily resolve "easy" sliced variables until the clause count increases\\
+Greedily resolve "easy" sliced variables until the clause count increases
+
 \only<2-4>{
 \begin{block}{Clause Ratio}
     
-
 $F=(a \lor b \lor c) \land (\neg a \lor b  \lor \neg d ) \land (c \lor e)$\\
 Sliced variables = $c,e$\\
 \vspace{0.1cm}
 {\bf Resolution of $c$ and $e$ is trivial} $\implies F = (\neg a \lor b  \lor \neg d )$ 
 \begin{center}
-    
 \only<3>{
 \begin{tikzpicture}
     \node (l1) {$(a_{11} \lor a_{12} \lor ... \lor v)$};
@@ -601,7 +686,6 @@ Sliced variables = $c,e$\\
 \end{block}}
 
 \only<5-7>{
- 
 \begin{block}{Connectivity}
     $(\neg a \lor b \lor v),(a \lor b \lor \neg v) \rightarrow (\neg a \lor b \lor b \lor c)\equiv \top$\\
     \vspace{0.1cm}
@@ -623,8 +707,6 @@ Sliced variables = $c,e$\\
     \end{center}}
 
     \only<6->{{\footnotesize \footnotemark[1]from GPMC source code}}
-
-    
 \end{block}}
 
 \begin{block}<8->{New Combined Heuristic}
@@ -666,7 +748,9 @@ Sliced variables = $c,e$\\
     \end{center}
 \end{block}
 \end{frame}
-\begin{frame}{Results}
+
+\subsection{Experimental Setup}
+\begin{frame}{\insertsubsection}
 \begin{block}{Solvers}
     \begin{itemize}
         \item {\bf pD4}: Our approach
@@ -680,54 +764,41 @@ Sliced variables = $c,e$\\
     \begin{itemize}
         \item {\bf Industrial Projection}: Real feature model slicing problems
         \item {\bf Generated Projection}: Adding randomly selected projected variables to real feature models
-        \item {\bf MC2022}: Private+Public instances from the MC2022 (many unknown sources...)
+        \item {\bf MC2022}: Private+public instances from the MC2022 (many unknown sources...)
     \end{itemize}
 \end{block}
 \begin{block}{Questions}
     Compare runtime performance and d-DNNF size
 \end{block}
-
 \end{frame}
 
-\begin{frame}{Experiment1: Industrial Projection}
-    \centering
-    \includegraphics[width=12cm]{exp1.png}
-\end{frame}
-\begin{frame}{Experiment2: Generated Projection}
-    \centering
-    \includegraphics[width=12cm]{exp2.png}
-\end{frame}
-\begin{frame}{Experiment2: Generated Projection}
+\subsection{Generated Projection for Feature Models (Table)}
+\begin{frame}{\insertsubsection}
     \centering
     \includegraphics[width=12cm]{exp2-table.png}
 \end{frame}
-\begin{frame}{Experiment3: MC2022}
-    \centering
-    \includegraphics[width=12cm]{exp3.png}
-\end{frame}
 
-\begin{frame}{Recap and Feature Work}
-    \begin{tikzpicture}[remember picture,overlay]
-        \node[xshift=-4cm,yshift=-3cm,visible on = <5->] at (current page.north east) {\includegraphics[width=6cm]{hyp2.png}};
-        \node[xshift=-3cm,yshift=-7cm,visible on = <6->] at (current page.north east) {\includegraphics[width=4cm]{rtx.png}};
-        \node[xshift=-6cm,yshift=-7cm,visible on = <6->] at (current page.north east) {\includegraphics[width=2cm]{thread.png}};
-        
-    \end{tikzpicture}
-    \begin{block}{Recap}
-        \begin{itemize}
-            \item Combine slice and d-DNNF compilation\pause
-            \item New heuristics for good performance\pause
-            \item Compile hard feature models like linux under projection \pause
-            \item Often comparable or smaller d-DNNF size
-        \end{itemize}
-    \end{block}\pause
-    \begin{block}{Future Work}
-        Lots of new possible heuristics...\\ \pause
-        Hardware acceleration...\\ \pause
-        More applications for projected output d-DNNF 
-    \end{block}
+%\begin{frame}{Projected d-DNNF Compilation}
+%%    \begin{tikzpicture}[remember picture,overlay]
+%%        \node[xshift=-4cm,yshift=-3cm,visible on = <5->] at (current page.north east) {\includegraphics[width=6cm]{hyp2.png}};
+%%        \node[xshift=-3cm,yshift=-7cm,visible on = <6->] at (current page.north east) {\includegraphics[width=4cm]{rtx.png}};
+%%        \node[xshift=-6cm,yshift=-7cm,visible on = <6->] at (current page.north east) {\includegraphics[width=2cm]{thread.png}};
+%%    \end{tikzpicture}
+%    \begin{fancycolumns}[widths={33}]
+%        \begin{itemize}
+%            \item Combine slicing and d-DNNF compilation
+%            \item Faster than slicing, faster then projectional model counting
+%            \item Often comparable or smaller d-DNNFs
+%            \item Compile hard feature models as Linux under projection
+%        \end{itemize}
+%    \nextcolumn
+%        \includegraphics[width=\linewidth]{exp3}
+%    \end{fancycolumns}
+%%    \begin{block}{Future Work}
+%%        Lots of new possible heuristics...\\ \pause
+%%        Hardware acceleration...\\ \pause
+%%        More applications for projected output d-DNNF 
+%%    \end{block}
+%\end{frame}
 
-\end{frame}
-\begin{frame}{The End}
-\end{frame}
 \end{document}
