@@ -24,6 +24,7 @@
 \usepackage{tikz-qtree}
 \usepackage{pgfplotstable}
 \usepackage{forest}
+\usepackage{fancyqr}
 
 \pgfplotsset{
    compat=1.16
@@ -44,6 +45,7 @@
 \input{tikz-hypergraph}
 \tikzset{hide on/.code={\only<#1>{\color{white}}}}
 
+\renewcommand{\footnote}[1]{\hfill{}\footnotesize{}[#1]}
 
 %\institutelogo{sp} % set the institute logo
 %\universitylogo{uulm} % set a new university logo
@@ -68,96 +70,7 @@
 
 \maketitle[image7] % title page with default picture
 
-\begin{frame}{The Boring Agenda Slide}
-		\begin{fancycolumns}[t,columns=3,animation=keep,reverse]
-		\setlength{\parskip}{.5ex}\tableofcontents[sections={1}]
-		\nextcolumn
-		\setlength{\parskip}{.5ex}\tableofcontents[sections={2}]
-		\nextcolumn
-		\setlength{\parskip}{.5ex}\tableofcontents[sections={3}]
-	\end{fancycolumns}
-\end{frame}
-
-\section{What is this session about? (Bonus)}
-
-\subsection{What is a feature model?}
-\begin{frame}{\insertsubsection}
-	mockup: this slide shows a feature model with 42 valid configurations
-\end{frame}
-
-\section{What you need to know about math?}
-
-\subsection{How to compute 42?}
-\begin{frame}{\insertsubsection\hfill{}\normalsize{}Deterministic Decomposable Negation Normal Form (d-DNNF)}
-	\begin{fancycolumns}[animation=none]
-		\centering\pic[height=70mm,trim={0\width} {.1\height} {.42\width} {.1\height},clip,page=5]{pD4}
-	\nextcolumn
-	\end{fancycolumns}
-\end{frame}
-
-\subsection{How to compute other numbers?}
-\begin{frame}{\insertsubsection\hfill{}Queries}
-	\begin{fancycolumns}
-		\centering\pic[height=70mm,trim={0\width} {.1\height} {.42\width} {.1\height},clip,page=5]{pD4}
-		\nextcolumn
-		How many configurations of cars with Bluetooth?
-	\end{fancycolumns}
-\end{frame}
-\begin{frame}{\insertsubsection\hfill{}Projections (Slices)}
-	\begin{fancycolumns}
-		\centering\pic[height=70mm,trim={0\width} {.1\height} {.42\width} {.1\height},clip,page=5]{pD4}
-		\nextcolumn
-		How many software configurations are there?
-	\end{fancycolumns}
-\end{frame}
-
-\section{Why should you care about this thesis?}
-
-\subsection{Is it novel?}
-\begin{frame}{\insertsubsection\hfill{}Projection + Compilation = Projected Compilation}
-	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.3\height},clip,page=9]{pD4}
-\end{frame}
-
-\subsection{Is it significant?}
-\begin{frame}{\insertsubsection\hfill{}Projected Model Counting Competition 2022}
-	\includegraphics[width=\linewidth]{exp3}
-\end{frame}
-
-\subsection{Is it sound?}
-\begin{frame}{\insertsubsection\hfill{}Random Projections on Feature Models}
-	\centering\includegraphics[width=\linewidth]{exp2}
-\end{frame}
-\begin{frame}{\insertsubsection\hfill{}Real Projections from Automotive Industry}
-	\centering\includegraphics[width=\linewidth]{exp1}
-\end{frame}
-
-\subsection{Is it verifiable?}
-\begin{frame}{\insertsubsection}
-	mockup: this slide shows a screenshot from the github project / replication package / or point to the thesis? is it public?
-\end{frame}
-
-\subsection{Is it clear?}
-\begin{frame}{\insertsubsection\hfill{}Projected d-DNNF Compilation for Feature Models}
-	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.4\height},clip,page=9]{pD4}
-	\begin{fancycolumns}[widths={52}]
-		\begin{note}{Projected Compilation = Projection + Compilation}
-			projected d-DNNF compilation \ldots
-			\begin{itemize}
-				\item is faster than projection / slicing (our  goal)
-				\item is faster than projected model counting (unexpected, due to many optimizations)
-				\item is much faster for multiple queries (expected)
-				\item produces d-DNNFs of comparable/smaller size
-				\item is the first instance of projected compilation
-			\end{itemize}
-		\end{note}
-		\nextcolumn
-		\includegraphics[width=\linewidth]{exp3}		
-	\end{fancycolumns}
-\end{frame}
-
-\subsection{(Is it great research?)}
-
-\section{More Details Wanted?}
+\section{What is the problem?}
 
 \subsection{Feature Models and Conjunctive Normal Forms}
 \begin{frame}{\insertsubsection}
@@ -169,6 +82,64 @@
 			(\text{x86} \land \neg \text{arm64}) \lor (\neg \text{x86} \land \text{arm64}) ...
 		\end{equation*}
 	\end{block}
+\end{frame}
+
+\subsection{d-DNNF}
+\begin{frame}{Deterministic Decomposable Negation Normal Form (d-DNNF)}
+	\begin{columns}[]
+		\begin{column}{.5\textwidth}
+			Any propositional formula which is:
+			
+			\begin{block}<1->{{\bf d}eterministic}
+				Exclusive or-operators $F=A \lor B$\\
+				Never simultaneous $A=1$ and $B=1$\\
+				If-then-else\\
+				$|F|=|A|+|B|$\\
+			\end{block}
+			\begin{block}<3->{{\bf D}ecomposable}
+				And-operands $F=A \land B$ never share variables\\
+				$|F|=|A|*|B|$\\
+			\end{block}
+			\begin{block}<5->{{\bf N}egation {\bf N}ormal {\bf F}orm}
+			\end{block}
+		\end{column}
+		\begin{column}{.5\textwidth}
+			\begin{center}
+				
+				
+				\only<1-2>{
+					\begin{forest}
+						for tree={ s sep+=12pt,
+							l sep+=12pt}
+						[$\lor$
+						[$a \land b$]
+						[$c \land \only<2>{\neg} b$],edge label={node[midway,left,font=\scriptsize]{1}}
+						] 
+				\end{forest}}
+				\only<3->{
+					\begin{forest}
+						for tree={ s sep+=12pt,
+							l sep+=12pt}
+						[$\land$
+						[$a\lor b$]
+						[${\color{red}\only<3>{b}}{\color{green}\only<4->{d}}\lor c$],edge label={node[midway,left,font=\scriptsize]{1}}
+						] 
+				\end{forest}}\\
+				\vspace{0.1cm}
+				\only<1>{Not a d-DNNF {\color{red} \xmark}}
+				\only<2>{A d-DNNF {\color{green} \checkmark}}
+				\only<3>{Not a d-DNNF {\color{red} \xmark}}
+				\only<4>{A d-DNNF {\color{green} \checkmark}}
+			\end{center}
+		\end{column}
+		
+	\end{columns}
+	\visible<6->{
+		\begin{center}
+			{\bf d-DNNF formulas allow linear-time model counting\\
+				d-DNNF compilation: CNF $\rightarrow$ d-DNNF}%\\
+				%knowledge compilation: It's still just a formula }}
+	\end{center}}
 \end{frame}
 
 \subsection{Feature-Model Slicing / Projection of Formulas}
@@ -204,6 +175,229 @@
 		\end{tabular}
 	\end{block}
 \end{frame}
+
+\begin{frame}{\insertsubsection\footnote{Krieter et al. SPLC16}}
+	Resolve all clauses with $v$ with all clauses with $\neg v$
+	\begin{block}<1->{Resolving Two Clauses}
+		\begin{equation*}
+			\begin{split}
+				(\neg VideoEncoding \lor Windows), (x86 \lor \neg Windows) &\rightarrow (\neg VideoEncoding \lor x86)\\
+				\visible<2->{ (a_1 \lor a_2 \lor  ...  \lor v), (b_1 \lor b_2 \lor  ... \lor \neg v) & \rightarrow (a_1 \lor a_2 \lor  ... \lor b_1 \lor b_2 \lor ...)}
+				% (VideoEncoding \implies Windows), (x86 \implies Windows) &\rightarrow (VideoEncoding  \implies x86)\\
+			\end{split}
+		\end{equation*}
+	\end{block}
+	\begin{block}<3->{Resolving Many Clauses}
+		\begin{center}
+			\begin{tikzpicture}
+				\node (l1) {$(a_{11} \lor a_{12} \lor ... \lor v)$};
+				\node[below = 0.1cm of l1] (l2) {$(a_{21} \lor a_{22} \lor ... \lor v)$};
+				\node[below = 0.1cm of l2] (l3) {$...$};
+				\node[below = 0.1cm of l3] (l4) {$(a_{n1} \lor a_{n2} \lor ... \lor v)$};
+				\node[right = 2cm of l1] (r1) {$(b_{11} \lor b_{12} \lor ... \lor \neg v)$};
+				\node[below = 0.1cm of r1] (r2) {$(b_{21} \lor b_{22} \lor ... \lor \neg v)$};
+				\node[below = 0.1cm of r2] (r3) {$...$};
+				\node[below = 0.1cm of r3] (r4) {$(b_{m1} \lor b_{m2} \lor ... \lor \neg v)$};
+				\path[draw] (l1.east) -- (r1.west);
+				\path[draw] (l1.east) -- (r2.west);
+				\path[draw] (l1.east) -- (r4.west);
+				\path[draw] (l2.east) -- (r1.west);
+				\path[draw] (l2.east) -- (r2.west);
+				\path[draw] (l2.east) -- (r4.west);
+				\path[draw] (l4.east) -- (r1.west);
+				\path[draw] (l4.east) -- (r2.west);
+				\path[draw] (l4.east) -- (r4.west);
+			\end{tikzpicture}\\
+			\visible<3->{
+				\vspace{0.1cm}
+				{\bf Exponential clause count increase for multiple variables.}\\
+			}
+		\end{center}
+	\end{block}
+\end{frame}
+
+\subsection{Scalability Issues with State-of-the-Art Reasoning}
+\begin{frame}{\insertsubsection}
+	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.3\height},clip,page=9]{pD4}
+\end{frame}
+
+%\begin{frame}{The Boring Agenda Slide}
+%		\begin{fancycolumns}[t,columns=3,animation=keep,reverse]
+%		\setlength{\parskip}{.5ex}\tableofcontents[sections={1}]
+%		\nextcolumn
+%		\setlength{\parskip}{.5ex}\tableofcontents[sections={2}]
+%		\nextcolumn
+%		\setlength{\parskip}{.5ex}\tableofcontents[sections={3}]
+%	\end{fancycolumns}
+%\end{frame}
+%
+%\section{What is this session about? (Bonus)}
+%
+%\subsection{What is a feature model?}
+%\begin{frame}{\insertsubsection}
+%	mockup: this slide shows a feature model with 42 valid configurations
+%\end{frame}
+%
+%\section{What you need to know about math?}
+%
+%\subsection{How to compute 42?}
+%\begin{frame}{\insertsubsection\hfill{}\normalsize{}Deterministic Decomposable Negation Normal Form (d-DNNF)}
+%	\begin{fancycolumns}[animation=none]
+%		\centering\pic[height=70mm,trim={0\width} {.1\height} {.42\width} {.1\height},clip,page=5]{pD4}
+%	\nextcolumn
+%	\end{fancycolumns}
+%\end{frame}
+%
+%\subsection{How to compute other numbers?}
+%\begin{frame}{\insertsubsection\hfill{}Queries}
+%	\begin{fancycolumns}
+%		\centering\pic[height=70mm,trim={0\width} {.1\height} {.42\width} {.1\height},clip,page=5]{pD4}
+%		\nextcolumn
+%		How many configurations of cars with Bluetooth?
+%	\end{fancycolumns}
+%\end{frame}
+%\begin{frame}{\insertsubsection\hfill{}Projections (Slices)}
+%	\begin{fancycolumns}
+%		\centering\pic[height=70mm,trim={0\width} {.1\height} {.42\width} {.1\height},clip,page=5]{pD4}
+%		\nextcolumn
+%		How many software configurations are there?
+%	\end{fancycolumns}
+%\end{frame}
+
+\section{Why should you care about this thesis?}
+
+\begin{frame}{\insertsection}
+	\Large
+	Standard Evaluation Criteria
+	
+	\begin{enumerate}
+		\item Novelty
+		\item Significance
+		\item Soundness
+		\item Verifyability
+		\item Clarity
+	\end{enumerate}
+	
+	Let me try to convince you \ldots
+\end{frame}
+
+\subsection{Is it novel?}
+\begin{frame}{\insertsubsection\hfill{}Projection + Compilation = Projected Compilation}
+	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.3\height},clip,page=9]{pD4}
+\end{frame}
+
+\begin{frame}[fragile]{\insertsubsection\hfill{}Projection + Compilation = Projected Compilation}
+	\begin{block}{Projected d-DNNF Compilation}
+		Projected variables = $a,b,d$\\
+		Sliced variables = $c,e$
+	\end{block}
+	
+	\begin{block}{}
+		\centering
+%		\begin{overlayarea}{10cm}{4.44cm}
+			\begin{tikzpicture}[overlay,every tree node/.style={},
+				level distance=1.25cm,sibling distance=1cm,
+				scale=0.9,
+				edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}]
+				\Tree
+				[. \node[visible on=<1->]{$(a \lor b \lor c) \land (\neg a \lor b  \lor \neg d ) \land (c \lor e)$};
+				\edge[visible on=<2->] node[auto=right] {$a$};
+				[. \node[visible on=<2->]{$( b  \lor \neg d ) \land (c \lor e)$ };
+				\edge[visible on=<4->] node[auto=right] {$$};
+				[. \node[visible on=<4->]{$(b \lor \neg d)$} ;
+				\edge[visible on=<5->] node[auto=right] {$$};
+				[.\node[visible on=<5->] {$\top$};  ] 
+				\edge[visible on=<5->] node[auto=right] {$$};
+				[.\node[visible on=<5->]{$\neg d$};  ] 
+				]
+				\edge[visible on=<4->] node[auto=right] {$$};
+				[.\node[visible on=<4->]{\only<4-5>{$(c \lor e)$} \only<6->{\color{red} $\top$}  };]
+				]
+				\edge[visible on=<3->] node[auto=left] {$\neg a$};
+				[.\node[visible on=<3->]{$(b \lor c) \land (c \lor e)$};
+				\edge[visible on=<7->] node[midway,left] {$b$};
+				[.\node[visible on=<7->]{$\top$};  ]
+				\edge[visible on=<7->] node[midway,right] {$\neg b$};
+				[.\node[visible on=<7->]{  \only<7>{ $(c \lor e)$ } \only<8->{\color{red} $\top$}   };  ]
+				]
+				]
+			\end{tikzpicture}
+			\vspace{30mm}
+%		\end{overlayarea}
+	\end{block}
+\end{frame}
+
+\subsection{Is it significant?}
+\begin{frame}{\insertsubsection\hfill{}Experimental Design}
+	\begin{block}{Solvers}
+		\begin{itemize}
+			\item {\bf pD4}: Our approach
+			\item {\bf slice}: Slicing followed by d-DNNF compilation
+			\item {\bf gpmc}: 1st place projected model counter in MC2022
+			\item {\bf D4-pmc}: 2nd place projected model counter in MC2022
+			\item {\bf arjun}: 3rd place projected model counter in MC2022
+		\end{itemize}
+	\end{block}
+	\begin{block}{Data}
+		\begin{itemize}
+			\item {\bf Industrial Projection}: Real feature model slicing problems
+			\item {\bf Generated Projection}: Adding randomly selected projected variables to real feature models
+			\item {\bf MC2022}: Private+public instances from the MC2022 (many unknown sources...)
+		\end{itemize}
+	\end{block}
+	\begin{block}{Questions}
+		Compare runtime performance (and d-DNNF size)
+	\end{block}
+\end{frame}
+
+\begin{frame}{\insertsubsection\hfill{}Projected Model Counting Competition 2022}
+	\includegraphics[width=\linewidth]{exp3}
+\end{frame}
+
+\subsection{Is it sound?}
+\begin{frame}{\insertsubsection\hfill{}Random Projections on Feature Models}
+	\centering\includegraphics[width=\linewidth]{exp2}
+\end{frame}
+\begin{frame}{\insertsubsection\hfill{}Real Projections from Automotive Industry}
+	\centering\includegraphics[width=\linewidth]{exp1}
+\end{frame}
+
+\subsection{Is it verifiable?}
+\begin{frame}{\insertsubsection}
+	\begin{fancycolumns}
+		\begin{notetight}{pD4 on Github}
+			\centering\pic[width=.8\linewidth]{qrcode-pd4}
+		\end{notetight}
+	\nextcolumn
+		\begin{notetight}{Replication Package}
+			\centering\pic[width=.8\linewidth]{qrcode-loth-package}			
+		\end{notetight}
+	\end{fancycolumns}
+\end{frame}
+
+\subsection{Is it clear?}
+\begin{frame}{\insertsubsection\hfill{}Projected d-DNNF Compilation for Feature Models}
+	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.4\height},clip,page=9]{pD4}
+	\begin{fancycolumns}[widths={52}]
+		\begin{note}{Projected Compilation = Projection + Compilation}
+			projected d-DNNF compilation \ldots
+			\begin{itemize}
+				\item is faster than projection / slicing (our  goal)
+				\item slicing Linux feasible if slice small enough
+				\item is faster than projected model counting (unexpected, due to many optimizations)
+				\item is much faster for multiple queries (expected)
+				\item produces d-DNNFs of comparable/smaller size
+				\item is the first instance of projected compilation
+			\end{itemize}
+		\end{note}
+		\nextcolumn
+		\includegraphics[width=\linewidth]{exp3}		
+	\end{fancycolumns}
+\end{frame}
+
+\againtitle
+
+\section{More Details Wanted?}
 
 \subsection{Model Counting}
 \begin{frame}{\insertsubsection}
@@ -272,107 +466,6 @@
 			\draw [decorate,
 			decoration = {brace},thick,red,visible on = <6>] (11,-0.75) --  (7.3,-0.75) node[midway,below] {can be slow};
 	\end{tikzpicture}}
-\end{frame}
-
-\subsection{Deterministic Decomposable Negation Normal Form (d-DNNF)}
-\begin{frame}{\insertsubsection}
-	\begin{columns}[]
-		\begin{column}{.5\textwidth}
-			Any propositional formula which is:
-			
-			\begin{block}<1->{{\bf d}eterministic}
-				Exclusive or-operators $F=A \lor B$\\
-				Never simultaneous $A=1$ and $B=1$\\
-				If-then-else\\
-				$|F|=|A|+|B|$\\
-			\end{block}
-			\begin{block}<3->{{\bf D}ecomposable}
-				And-operands $F=A \land B$ never share variables\\
-				$|F|=|A|*|B|$\\
-			\end{block}
-			\begin{block}<5->{{\bf N}egation {\bf N}ormal {\bf F}orm}
-			\end{block}
-		\end{column}
-		\begin{column}{.5\textwidth}
-			\begin{center}
-				
-				
-				\only<1-2>{
-					\begin{forest}
-						for tree={ s sep+=12pt,
-							l sep+=12pt}
-						[$\lor$
-						[$a \land b$]
-						[$c \land \only<2>{\neg} b$],edge label={node[midway,left,font=\scriptsize]{1}}
-						] 
-				\end{forest}}
-				\only<3->{
-					\begin{forest}
-						for tree={ s sep+=12pt,
-							l sep+=12pt}
-						[$\land$
-						[$a\lor b$]
-						[${\color{red}\only<3>{b}}{\color{green}\only<4->{d}}\lor c$],edge label={node[midway,left,font=\scriptsize]{1}}
-						] 
-				\end{forest}}\\
-				\vspace{0.1cm}
-				\only<1>{Not a d-DNNF {\color{red} \xmark}}
-				\only<2>{A d-DNNF {\color{green} \checkmark}}
-				\only<3>{Not a d-DNNF {\color{red} \xmark}}
-				\only<4>{A d-DNNF {\color{green} \checkmark}}
-			\end{center}
-		\end{column}
-		
-	\end{columns}
-	\visible<6->{
-		\begin{center}
-			{\bf d-DNNF formulas allow linear-time model counting\\
-				d-DNNF compilation: CNF $\rightarrow$ d-DNNF\\
-				knowledge compilation: It's still just a formula }}
-	\end{center}
-\end{frame}
-
-\renewcommand{\footnote}[1]{\hfill{}\footnotesize{}[#1]}
-
-\subsection{Slicing Implementation}
-\begin{frame}{\insertsubsection\footnote{Comparing Algorithms for Efficient Feature-Model Slicing, Krieter et al.}}
-    Resolve all clauses with $v$ with all clauses with $\neg v$
-    \begin{block}<1->{Resolving Two Clauses}
-        \begin{equation*}
-            \begin{split}
-            (\neg VideoEncoding \lor Windows), (x86 \lor \neg Windows) &\rightarrow (\neg VideoEncoding \lor x86)\\
-            \visible<2->{ (a_1 \lor a_2 \lor  ...  \lor v), (b_1 \lor b_2 \lor  ... \lor \neg v) & \rightarrow (a_1 \lor a_2 \lor  ... \lor b_1 \lor b_2 \lor ...)}
-           % (VideoEncoding \implies Windows), (x86 \implies Windows) &\rightarrow (VideoEncoding  \implies x86)\\
-            \end{split}
-        \end{equation*}
-    \end{block}
-    \begin{block}<3->{Resolving Many Clauses}
-        \begin{center}
-        \begin{tikzpicture}
-            \node (l1) {$(a_{11} \lor a_{12} \lor ... \lor v)$};
-            \node[below = 0.1cm of l1] (l2) {$(a_{21} \lor a_{22} \lor ... \lor v)$};
-            \node[below = 0.1cm of l2] (l3) {$...$};
-            \node[below = 0.1cm of l3] (l4) {$(a_{n1} \lor a_{n2} \lor ... \lor v)$};
-            \node[right = 2cm of l1] (r1) {$(b_{11} \lor b_{12} \lor ... \lor \neg v)$};
-            \node[below = 0.1cm of r1] (r2) {$(b_{21} \lor b_{22} \lor ... \lor \neg v)$};
-            \node[below = 0.1cm of r2] (r3) {$...$};
-            \node[below = 0.1cm of r3] (r4) {$(b_{m1} \lor b_{m2} \lor ... \lor \neg v)$};
-            \path[draw] (l1.east) -- (r1.west);
-            \path[draw] (l1.east) -- (r2.west);
-            \path[draw] (l1.east) -- (r4.west);
-            \path[draw] (l2.east) -- (r1.west);
-            \path[draw] (l2.east) -- (r2.west);
-            \path[draw] (l2.east) -- (r4.west);
-            \path[draw] (l4.east) -- (r1.west);
-            \path[draw] (l4.east) -- (r2.west);
-            \path[draw] (l4.east) -- (r4.west);
-        \end{tikzpicture}\\
-        \visible<3->{
-        \vspace{0.1cm}
-        {\bf Exponential clause count increase for multiple variables.}\\
-        }
-    \end{center}
-    \end{block}
 \end{frame}
 
 \subsection{d-DNNF Compilation}
@@ -535,47 +628,6 @@
                 \bf Split formula into independent sub-problems of roughly equal size.\\
             \end{center}
         \end{block}
-\end{frame}
-
-\subsection{Projected d-DNNF Compilation}
-\begin{frame}[fragile]{\insertsubsection}
-	\begin{block}{Concept}
-	Projected variables = $a,b,d$\\
-	Sliced variables = $c,e$
-	\end{block}
-	
-	\begin{block}{}
-		\centering
-		\begin{overlayarea}{10cm}{4.44cm}
-\begin{tikzpicture}[every tree node/.style={},
-	level distance=1.25cm,sibling distance=1cm,
-	scale=0.9,
-	edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}]
- \Tree
- [. \node[visible on=<1->]{$(a \lor b \lor c) \land (\neg a \lor b  \lor \neg d ) \land (c \lor e)$};
-	 \edge[visible on=<2->] node[auto=right] {$a$};
-	 [. \node[visible on=<2->]{$( b  \lor \neg d ) \land (c \lor e)$ };
-	 	\edge[visible on=<4->] node[auto=right] {$$};
-	 	[. \node[visible on=<4->]{$(b \lor \neg d)$} ;
-		 	\edge[visible on=<5->] node[auto=right] {$$};
-	 		[.\node[visible on=<5->] {$\top$};  ] 
-			\edge[visible on=<5->] node[auto=right] {$$};
-	 		[.\node[visible on=<5->]{$\neg d$};  ] 
-	 	]
-		\edge[visible on=<4->] node[auto=right] {$$};
-	 	[.\node[visible on=<4->]{\only<4-5>{$(c \lor e)$} \only<6->{\color{red} $\top$}  };]
-	]
-	 \edge[visible on=<3->] node[auto=left] {$\neg a$};
-	 [.\node[visible on=<3->]{$(b \lor c) \land (c \lor e)$};
-		 \edge[visible on=<7->] node[midway,left] {$b$};
-		 [.\node[visible on=<7->]{$\top$};  ]
-		 \edge[visible on=<7->] node[midway,right] {$\neg b$};
-		 [.\node[visible on=<7->]{  \only<7>{ $(c \lor e)$ } \only<8->{\color{red} $\top$}   };  ]
-	]
- ]
- \end{tikzpicture}
-\end{overlayarea}
-\end{block}
 \end{frame}
 
 \subsection{Integration and Optimization in D4}
@@ -749,29 +801,6 @@ Sliced variables = $c,e$\\
 \end{block}
 \end{frame}
 
-\subsection{Experimental Setup}
-\begin{frame}{\insertsubsection}
-\begin{block}{Solvers}
-    \begin{itemize}
-        \item {\bf pD4}: Our approach
-        \item {\bf slice}: Slicing followed by d-DNNF compilation
-        \item {\bf gpmc}: 1st place projected model counter in MC2022
-        \item {\bf D4-pmc}: 2nd place projected model counter in MC2022
-        \item {\bf arjun}: 3rd place projected model counter in MC2022
-    \end{itemize}
-\end{block}
-\begin{block}{Data}
-    \begin{itemize}
-        \item {\bf Industrial Projection}: Real feature model slicing problems
-        \item {\bf Generated Projection}: Adding randomly selected projected variables to real feature models
-        \item {\bf MC2022}: Private+public instances from the MC2022 (many unknown sources...)
-    \end{itemize}
-\end{block}
-\begin{block}{Questions}
-    Compare runtime performance and d-DNNF size
-\end{block}
-\end{frame}
-
 \subsection{Generated Projection for Feature Models (Table)}
 \begin{frame}{\insertsubsection}
     \centering
@@ -800,5 +829,8 @@ Sliced variables = $c,e$\\
 %%        More applications for projected output d-DNNF 
 %%    \end{block}
 %\end{frame}
+
+\subsection{The End}
+\againtitle
 
 \end{document}

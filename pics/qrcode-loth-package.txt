@@ -1,0 +1,1 @@
+https://github.com/lothran/projected-ddnnf-eval
