@@ -218,7 +218,13 @@
 
 \subsection{Scalability Issues with State-of-the-Art Reasoning}
 \begin{frame}{\insertsubsection}
-	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.3\height},clip,page=9]{pD4}
+	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.2\height},clip,page=10]{pD4}
+\end{frame}
+\begin{frame}{\insertsubsection}
+	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.2\height},clip,page=11]{pD4}
+\end{frame}
+\begin{frame}{\insertsubsection}
+	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.2\height},clip,page=12]{pD4}
 \end{frame}
 
 %\begin{frame}{The Boring Agenda Slide}
@@ -283,7 +289,7 @@
 
 \subsection{Is it novel?}
 \begin{frame}{\insertsubsection\hfill{}Projection + Compilation = Projected Compilation}
-	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.3\height},clip,page=9]{pD4}
+	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.2\height},clip,page=13]{pD4}
 \end{frame}
 
 \begin{frame}[fragile]{\insertsubsection\hfill{}Projection + Compilation = Projected Compilation}
@@ -297,7 +303,7 @@
 %		\begin{overlayarea}{10cm}{4.44cm}
 			\begin{tikzpicture}[overlay,every tree node/.style={},
 				level distance=1.25cm,sibling distance=1cm,
-				scale=0.9,
+				scale=1,
 				edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}]
 				\Tree
 				[. \node[visible on=<1->]{$(a \lor b \lor c) \land (\neg a \lor b  \lor \neg d ) \land (c \lor e)$};
@@ -340,9 +346,9 @@
 	\end{block}
 	\begin{block}{Data}
 		\begin{itemize}
-			\item {\bf Industrial Projection}: Real feature model slicing problems
-			\item {\bf Generated Projection}: Adding randomly selected projected variables to real feature models
 			\item {\bf MC2022}: Private+public instances from the MC2022 (many unknown sources...)
+			\item {\bf Generated Projection}: Adding randomly selected projected variables to real feature models
+			\item {\bf Industrial Projection}: Real feature model slicing problems
 		\end{itemize}
 	\end{block}
 	\begin{block}{Questions}
@@ -377,16 +383,16 @@
 
 \subsection{Is it clear?}
 \begin{frame}{\insertsubsection\hfill{}Projected d-DNNF Compilation for Feature Models}
-	\pic[width=\linewidth,trim={0\width} {.4\height} {0\width} {.4\height},clip,page=9]{pD4}
+	\pic[width=\linewidth,trim={0\width} {.5\height} {0\width} {.25\height},clip,page=13]{pD4}
 	\begin{fancycolumns}[widths={52}]
 		\begin{note}{Projected Compilation = Projection + Compilation}
 			projected d-DNNF compilation \ldots
 			\begin{itemize}
-				\item is faster than projection / slicing (our  goal)
+				\item is faster than slicing (our  goal)
 				\item slicing Linux feasible if slice small enough
 				\item is faster than projected model counting (unexpected, due to many optimizations)
-				\item is much faster for multiple queries (expected)
-				\item produces d-DNNFs of comparable/smaller size
+				\item is much faster for multiple queries
+				%\item produces d-DNNFs of comparable/smaller size
 				\item is the first instance of projected compilation
 			\end{itemize}
 		\end{note}
@@ -397,7 +403,7 @@
 
 \againtitle
 
-\section{More Details Wanted?}
+\section{More details wanted?}
 
 \subsection{Model Counting}
 \begin{frame}{\insertsubsection}
